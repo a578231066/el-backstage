@@ -1,0 +1,58 @@
+body{margin:0;}
+
+body > .el-container {
+  margin-bottom: 40px;
+}
+
+.el-container:nth-child(5) .el-aside,
+.el-container:nth-child(6) .el-aside {
+  line-height: 260px;
+}
+
+.el-container:nth-child(7) .el-aside {
+  line-height: 320px;
+}
+
+.el-aside {
+  height: auto;
+  color: #333;
+  text-align: center;
+  border-right:2px solid #eee;
+}
+
+.el-menu{
+  border-right:1px solid #eee;;
+}
+
+.el-header, .el-footer {
+    height:50px;
+    line-height:50px;
+    border-bottom:2px solid #eee;
+ }
+
+.el-header .el-breadcrumb{
+  width:50%;
+  height: 52px;
+  line-height:60px;
+  float: left;
+}
+
+.el-header .right{
+  width: 48%;
+  height: 52px;
+  float: right;
+  text-align: right;
+}
+
+.el-dropdown{
+  cursor:pointer;
+}
+
+.el-main {
+  background-color: #E9EEF3;
+  color: #333;
+  text-align: center;
+  line-height: 160px;
+}
+  
+  
