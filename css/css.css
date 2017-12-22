@@ -1,58 +1,33 @@
-body{margin:0;}
+/*
+    项目负责人：赵强
+    项目创建日期:2017.12.20
+    最新更新:2017.12.20
+    修改人员:无
+    修改日期:无
+    修改原因:无
+    修改代码行数区间:无
+*/
+body{margin: 0; padding: 0;}
+body > .el-container { margin-bottom: 40px;}
 
-body > .el-container {
-  margin-bottom: 40px;
-}
+[v-cloak]{ display: none;}
 
-.el-container:nth-child(5) .el-aside,
-.el-container:nth-child(6) .el-aside {
-  line-height: 260px;
-}
+/* 左侧栏 */
+.el-aside { height: 500px; background-color: #fff; color: #000; text-align: center; margin:0; padding:0;}
+.el-aside h3{ margin: 0; padding:15px; text-align: left; border-right: 1px solid #e6e6e6}
+.el-aside h3 i{ margin-right: 6px;}
+.el-aside .el-menu i:first-child{ margin-left:-30px;}
+.el-aside .el-menu span{ display: inline-block; width: 80px; text-align: left;}
+/* 头部与底部 */
+.el-header, .el-footer { background-color: #fff; color: #333; text-align: center; line-height: 60px;}
 
-.el-container:nth-child(7) .el-aside {
-  line-height: 320px;
-}
+.el-container:nth-child(5) .el-aside,.el-container:nth-child(6) .el-aside { line-height: 260px;}
+.el-container:nth-child(7) .el-aside { line-height: 320px;}
 
-.el-aside {
-  height: auto;
-  color: #333;
-  text-align: center;
-  border-right:2px solid #eee;
-}
+/* 面包屑导航 */
+.el-header .el-breadcrumb{ width: 50%; height: 58px; line-height: 60px;}
+.el-header div.fr strong{ margin-right:10px; letter-spacing: 1px; color: #555;}
+.el-header div.fr .el-dropdown{ cursor: pointer;}
+/* 内容 */
+.el-main { background-color: #fff; color: #333; border-top:1px solid #e6e6e6;}
 
-.el-menu{
-  border-right:1px solid #eee;;
-}
-
-.el-header, .el-footer {
-    height:50px;
-    line-height:50px;
-    border-bottom:2px solid #eee;
- }
-
-.el-header .el-breadcrumb{
-  width:50%;
-  height: 52px;
-  line-height:60px;
-  float: left;
-}
-
-.el-header .right{
-  width: 48%;
-  height: 52px;
-  float: right;
-  text-align: right;
-}
-
-.el-dropdown{
-  cursor:pointer;
-}
-
-.el-main {
-  background-color: #E9EEF3;
-  color: #333;
-  text-align: center;
-  line-height: 160px;
-}
-  
-  

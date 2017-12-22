@@ -1,0 +1,58 @@
+/*
+    项目负责人：赵强
+    项目创建日期:2017.12.20
+    最新更新:2017.12.20
+    修改人员:无
+    修改日期:无
+    修改原因:无
+    修改代码行数区间:无
+*/
+@charset "utf-8";
+/* 初始化 */
+body{font-family:"微软雅黑", "宋体", "黑体" , "Helvetica Neue", "Helvetica", "Arial", "sans-serif";}
+body, ul, ol, li, p, dl, dt, dd, input, form, h1, h2, h3, h4, h5, h6 {
+	margin: 0;
+	padding: 0;
+}
+img {
+	border: none;
+	transition:2s;
+}
+img:hover{opacity:.8; transition:2s;}
+
+ul {
+	list-style: none;
+}
+body {
+	color: #333;
+	font-size: 12px;
+	line-height: 1.7em;
+}
+a {
+	text-decoration: none;
+	color: #707273;
+}
+a:hover {
+	text-decoration: none;
+}
+input:focus {
+	outline: none
+}
+.fl {
+	float: left
+}
+.fr {
+	float: right
+}
+.abs {
+	position: absolute
+}
+.rel {
+	position: relative
+}
+.clear {
+	clear: both;
+	height: 0;
+	overflow: hidden
+}
+.center{width:100%; margin:0 auto;}

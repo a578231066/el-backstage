@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <link rel="stylesheet" href="css/reset.css" type="text/css">
+  <link rel="stylesheet" href="css/css.css" type="text/css">
+</head>
+<body>
+    <div id="app">
+        <el-container style="height:900px;"  v-cloak>
+            <!-- 侧边栏 -->
+            <el-aside width="200px">
+                <h3><i class="el-icon-edit"></i>Atom System</h3>
+                <el-menu default-active="1" @open="getIndex" @close="close">
+                    <el-submenu index="1">
+                        <template slot="title">
+                            <i class="el-icon-location"></i>
+                            <span>文章管理</span>
+                        </template>
+                        <el-menu-item-group>
+                            <template slot="title">分组一</template>
+                            <el-menu-item index="1-1">选项1</el-menu-item>
+                            <el-menu-item index="1-2">选项2</el-menu-item>
+                        </el-menu-item-group>
+                        <el-menu-item-group title="分组2">
+                            <el-menu-item index="1-3">选项3</el-menu-item>
+                        </el-menu-item-group>
+                    </el-submenu>
+                    <el-menu-item index="2">
+                        <i class="el-icon-menu"></i>
+                        <span slot="title">人员管理</span>
+                    </el-menu-item>
+                    <el-menu-item index="3">
+                        <i class="el-icon-setting"></i>
+                        <span slot="title">设置</span>
+                    </el-menu-item>
+                </el-menu>
+            </el-aside>
+
+            <el-container>
+                <!-- 头部 -->
+                <el-header>
+                    <!-- 面包屑导航 -->
+                    <el-breadcrumb separator-class="el-icon-arrow-right" class="fl">
+                        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+                        <el-breadcrumb-item>cnode</el-breadcrumb-item>
+                        <el-breadcrumb-item>文章管理</el-breadcrumb-item>
+                        <el-breadcrumb-item>列表</el-breadcrumb-item>
+                    </el-breadcrumb>
+
+                    <!-- 右侧 -->
+                    <div class="fr">
+                        <strong>用户名XXX</strong>
+                        <el-dropdown :hide-on-click="false" trigger="click">
+                            <span class="el-dropdown-link">
+                                下拉菜单<i class="el-icon-arrow-down el-icon--right"></i>
+                            </span>
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item>查看</el-dropdown-item>
+                                <el-dropdown-item>新增</el-dropdown-item>
+                                <el-dropdown-item>删除</el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
+                    </div>
+                </el-header>
+
+                <!-- 内容 -->
+                <el-main>
+                    <template>
+                        <el-table :data="tableData" v-loading="isLoading">
+                            <el-table-column type="selection" width="55"></el-table-column>
+                            <el-table-column label="日期"  prop="last_reply_at" width="120">
+                                <template slot-scope="scope">
+                                    <i class="el-icon-time"></i>
+                                    <span>{{new Date(scope.row.last_reply_at).toLocaleString()}}</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="tab" label="姓名" width="120"></el-table-column>
+                            <el-table-column prop="title" label="标题" show-overflow-tooltip></el-table-column>
+                            <el-table-column label="操作">
+                                <template slot-scope="scope">
+                                    <el-button size="mini" @click="handleEdit(scope.$index)" >编辑</el-button>
+                                    <el-button size="mini" type="danger" @click="handleDelete(scope.$index)">删除</el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                        </el-table>
+                            <div class="block">
+                                    <el-pagination  @size-change="changeSize" @current-change="changeCurrent" :current-page="activePage" :page-sizes="[5, 10, 15, 20]"  :page-size="activePageSize" layout="total, sizes, prev, pager, next, jumper"  :total="200"></el-pagination>
+                            </div>
+                    </template>
+
+                    <!-- 弹出对话框 -->
+                    <el-dialog title="修改标题" :visible.sync="dialogFormVisible">
+                        <el-form :model="form">
+                          <el-form-item label="标题" :label-width="formLabelWidth">
+                            <el-input v-model="form.title" auto-complete="off"></el-input>
+                          </el-form-item>
+                        </el-form>
+                        <div slot="footer" class="dialog-footer">
+                          <el-button @click="dialogFormVisible = false">取 消</el-button>
+                          <el-button type="primary" @click="sure">确 定</el-button>
+                        </div>
+                      </el-dialog>
+                </el-main>
+            </el-container>
+        </el-container>
+    </div>
+</body>
+  <!-- 先引入 Vue -->
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <!-- 引入组件库 -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <!-- 引入axios -->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    new Vue({
+        el: '#app',
+        data: function() {
+            return {
+                isLoading:"",
+                tableData: [],
+                activePage:1,/* 第一页 */
+                activePageSize:10, /* 一页是个 */
+                btn:"删除",
+                dialogFormVisible: false,
+                form: {
+                    name: '',
+                    region: '',
+                    date1: '',
+                    date2: '',
+                    type: [],
+                    resource: '',
+                    desc: ''
+                },
+                formLabelWidth: '120px'
+            }
+        },
+        mounted:function(){
+            this.getList();
+        },
+        methods:{
+            /* 点击出现 */
+            getIndex:function(index){
+                console.log(index);
+            },
+            /* 点击消失 */
+            close:function(index , path){
+                console.log(index + "..." + path)
+            },
+            getList: function(page , limit){
+                this.isLoading = true;
+                axios.get('https://cnodejs.org/api/v1/topics',{
+                params:{
+                    page: this.activePage,
+                    limit: this .activePageSize
+                }
+                }).then(function(resData){
+                this.isLoading = false;
+                this.tableData = resData.data.data;
+                }.bind(this));
+            },
+            changeSize:function(size){
+                this.activePageSize = size;
+            },
+            changeCurrent:function(current){
+                this.activePage = current;
+            },
+            handleDelete(index) {
+                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(function () {
+                    this.tableData.splice(index, 1);
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                }.bind(this)).catch(function (){
+                    console.log(null);
+                });
+            },
+
+            handleEdit:function(index){
+                this.form.index = index;
+                this.form.title = this.tableData[index].title;
+                this.dialogFormVisible = true;
+            },
+            /**
+            * 保存到服务器
+            */
+            sure: function () {
+                this.tableData[this.form.index].title = this.form.title;
+                this.dialogFormVisible = false;
+                this.isLoading = true;
+                // 此处应该有ajax交互代码
+                // 暂用setTimeout模拟
+                setTimeout(function () {
+                    this.isLoading = false;
+                    this.$message('修改成功!'); // 饿了么UI的message组件
+                }.bind(this), 1000);
+            },
+        },
+        watch : {
+            activePage:function(){
+                this.getList();
+            },
+            activePageSize:function(){
+                this.getList();
+            }
+        }
+    });
+  </script>
+</html>
